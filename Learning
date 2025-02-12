@@ -1,0 +1,16 @@
+Artificial disease progression model simulation
+Algorithm was simple
+* Deterime an nonlinear deterministic disease prgression model for the placebo group. Get treatment group by reducing the model by some percentage. 
+* Plans to generated longitudinal data from the model for treated and palcebo group for 5 time points
+* Generate Multivariate normal for each of the time point with mean 0, diseared variance and correlation matrix 
+* Add the normal error to the deterministic model
+* Run statistical models to see whether it can detect the desired difference between placebo and treatment
+
+Learning: 
+1. Each time the algorithm producing same estimate repeatedly. After a long investigation I realized, I set seed to null and solved the issue forever. For reproducibility, it would be better to use a series of random number seed for each iteration.
+2. I am not sure why that solved the problem as this is the first time. However, microsoft co-pilot has some thought on it thought does not completely make sense. It took couple of day to find the solution.
+
+"When you use set.seed(NULL), it initializes the random number generator with a seed based on the current time and process ID, which ensures that you get different random numbers 
+each time you run your code1. This is why you observed different random numbers after using set.seed(NULL).
+Without explicitly setting a seed, R uses the current state of the random number generator, which can sometimes result in the same sequence of random numbers 
+if the state hasn't changed significantly between runs. By setting the seed to NULL, you force R to use a new, unpredictable seed each time, ensuring variability in the generated random numbers."
