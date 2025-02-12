@@ -14,3 +14,11 @@ Learning:
 each time you run your code1. This is why you observed different random numbers after using set.seed(NULL).
 Without explicitly setting a seed, R uses the current state of the random number generator, which can sometimes result in the same sequence of random numbers 
 if the state hasn't changed significantly between runs. By setting the seed to NULL, you force R to use a new, unpredictable seed each time, ensuring variability in the generated random numbers."
+
+However the following make sense. I had been using the parallel processing frequently. 
+The situation where R uses the current state of the random number generator (RNG) and produces the same sequence of random numbers can occur under specific conditions:
+Short Time Intervals Between Runs: If you run your code multiple times in quick succession without setting a new seed, the RNG state might not change significantly. This can lead to the same sequence of random numbers being generated.
+Parallel Processing: In parallel computations, if the RNG state is not properly managed, different nodes might end up using the same state, leading to identical sequences of random numbers. Proper partitioning or re-parametrization of the RNG is necessary to avoid this1.
+Reproducibility: If you explicitly set a seed using set.seed() and then run your code, R will produce the same sequence of random numbers each time. This is useful for reproducibility but can lead to the same data being generated if the seed is not changed.
+Finite State Space: The RNG in R has a finite state space, meaning that given enough random number generations, the sequences can eventually repeat. This is a rare occurrence but theoretically possible1.
+Default RNG State: If you do not set a seed and the RNG state is not significantly altered by other operations, the default state might lead to similar sequences being generated in different runs.
