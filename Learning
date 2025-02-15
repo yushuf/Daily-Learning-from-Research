@@ -22,3 +22,32 @@ Parallel Processing: In parallel computations, if the RNG state is not properly 
 Reproducibility: If you explicitly set a seed using set.seed() and then run your code, R will produce the same sequence of random numbers each time. This is useful for reproducibility but can lead to the same data being generated if the seed is not changed.
 Finite State Space: The RNG in R has a finite state space, meaning that given enough random number generations, the sequences can eventually repeat. This is a rare occurrence but theoretically possible1.
 Default RNG State: If you do not set a seed and the RNG state is not significantly altered by other operations, the default state might lead to similar sequences being generated in different runs.
+
+
+Regarding LMER fit for the FTD simulation:
+For simulating type 1 error with the natural cubic spline, the lmer model was used with the time basis function. In the random effect used 
+(0 + Mcat|id). Mcat is the factor variable of discrete time point of (0, 6, 12, 18, 24) months. This is a longitudianl data and a subject was
+observed at those time points. The random effects estimates 5 parameter for 5 observation which leads to overfit repeatedly. Hui thinks this is okay
+However, this leads the warning of "Boundary Singular Fit". Here is the reason and consequence of boundary singular fit
+
+Reasons:
+Boundary Singular fit implies the varianace of estimates of randome effects are effectively zero. This might happen due to the following1. 
+1. Multicollinearity
+2. Overfitting
+3. insufficient data
+
+Consequence if we ignore this:
+1. Random effect variance estimate zero implies the non-existance of the model
+2. SE and CIs might be under estimated, that leads to over confidence inference.
+3. This might inflates the type-1 error (false positive)
+4. Poor generalization
+
+Solution:
+1. Simplify the model structure that require lower number of parameter to estimate
+2. Increase sample size
+3. Alternative modeling approace
+
+Coding:
+If we want to capture the error message or warnings for a method for an estimator, that should not be included within the function of the estimate
+for example ncs2.fit in the FTD_sminulation repository.
+
